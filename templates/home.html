@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}ホーム - 鯨類まとめ{% endblock %}
+{% block content %}
+  <h1 class="h1">ホーム</h1>
+
+  <section class="card">
+    <h2 class="h2">今日の鯨類</h2>
+    <div class="row">
+      <div>
+        <div class="big">{{ today_species.jp }}</div>
+        <div class="small">{{ today_species.en }} / <span class="mono">{{ today_species.sci }}</span></div>
+      </div>
+      <div class="right">
+        <a class="btn" href="{{ url_for('species_detail', species_id=today_species.id) }}">詳細を見る</a>
+      </div>
+    </div>
+    {% if not logged_in %}
+      <p class="note">ログインすると「お気に入り」や談話室の投稿が利用できます。</p>
+    {% endif %}
+  </section>
+
+  <section class="card">
+    <h2 class="h2">今週の検索回数が多い鯨類</h2>
+    {% if top_week %}
+      <ol class="rank-list">
+        {% for sp in top_week %}
+          <li class="rank-item">
+            <a href="{{ url_for('species_detail', species_id=sp.id) }}">{{ sp.jp }}</a>
+            <span class="badge">{{ sp.count }} 回</span>
+          </li>
+        {% endfor %}
+      </ol>
+      <p class="note">検索ページで詳細を開いた場合のみ「今週の検索回数」に加算されます。</p>
+    {% else %}
+      <p class="note">今週の検索データはまだありません。</p>
+    {% endif %}
+  </section>
+
+  <section class="card">
+    <h2 class="h2">使い方</h2>
+    <ul class="list">
+      <li>ヘッダーの検索バーで、和名・英名・学名から検索できます。</li>
+      <li>各種の詳細ページで、ログイン後に「お気に入り」へ追加できます。</li>
+    </ul>
+  </section>
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}収録一覧 - 鯨類まとめ{% endblock %}
+{% block content %}
+  <h1>収録一覧</h1>
+
+  <section class="card">
+    <p class="note">収録数：{{ total_species }}</p>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>和名</th>
+          <th>英名</th>
+          <th>学名</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for sp in species %}
+          <tr>
+            <td><a href="{{ url_for('species_detail', species_id=sp.id) }}">{{ sp.jp }}</a></td>
+            <td>{{ sp.en }}</td>
+            <td class="mono">{{ sp.sci }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </section>
+{% endblock %}

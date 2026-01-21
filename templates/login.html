@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}ログイン - 鯨類まとめ{% endblock %}
+{% block content %}
+  <h1>ログイン</h1>
+
+  <div class="card">
+    {% if message %}
+      <p class="alert">{{ message }}</p>
+    {% endif %}
+
+    <form action="{{ url_for('login') }}" method="post">
+      <label>ユーザー名：
+        <input type="text" name="username" value="{{ user_prefill }}" autocomplete="username">
+      </label><br>
+      <label>パスワード：
+        <input type="password" name="password" autocomplete="current-password">
+      </label><br>
+      <input type="submit" value="ログイン">
+    </form>
+
+    <hr class="hr">
+    <p class="note">アカウントをお持ちでない場合：<a href="{{ url_for('register') }}">新規登録</a></p>
+  </div>
+{% endblock %}

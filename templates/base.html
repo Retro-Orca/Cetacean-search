@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}鯨類まとめサイト{% endblock %}</title>
+
+  <!-- favicon -->
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='img/site_icon.png') }}">
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <script src="{{ url_for('static', filename='js/main.js') }}" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-row header-top">
+      <div class="brand">
+        <a class="brand-link" href="{{ url_for('home') }}">
+          <img class="logo" src="{{ url_for('static', filename='img/site_icon.png') }}" alt="サイトアイコン">
+          <span class="brand-text">鯨類まとめ</span>
+        </a>
+      </div>
+
+      <div class="header-stats" aria-label="サイト統計">
+        <span>訪問者数：<span class="mono">{{ visitor_count }}</span></span>
+        <span>収録数：<span class="mono">{{ total_species }}</span></span>
+        <span>今週：<span class="mono">{{ week_id }}</span></span>
+      </div>
+    </div>
+
+    <div class="header-row header-bottom">
+      <nav class="header-links" aria-label="サイトナビゲーション">
+        <a href="{{ url_for('home') }}">ホーム</a>
+        <a href="{{ url_for('data') }}">収録一覧</a>
+        <a href="{{ url_for('bbs') }}">談話室</a>
+        <a href="{{ url_for('stats') }}">統計</a>
+      </nav>
+
+      <div class="header-actions">
+        <form class="search-mini" action="{{ url_for('search') }}" method="get" aria-label="サイト内検索">
+          <input type="text" name="q" value="{{ request.args.get('q','') if request else '' }}" placeholder="検索（和名/英名/学名）" />
+          <input type="submit" value="検索">
+        </form>
+
+        <div class="auth-link" aria-label="アカウント">
+          {% if logged_in %}
+            <a href="{{ url_for('mypage') }}">マイページ</a>
+          {% else %}
+            <a href="{{ url_for('login') }}">ログイン</a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="footer">
+    <small>※お気に入りはユーザーアカウントごとに保存されます。訪問者数・検索回数（週単位）・談話室投稿は data/ フォルダに保存されます。</small>
+  </footer>
+</body>
+</html>

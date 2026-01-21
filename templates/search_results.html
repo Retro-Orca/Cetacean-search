@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}検索 - 鯨類まとめ{% endblock %}
+{% block content %}
+  <h1 class="h1">検索</h1>
+
+  <section class="card">
+    <form action="{{ url_for('search') }}" method="get" class="search-form">
+      <label class="search-label" for="q">検索語</label>
+      <div class="search-row">
+        <input id="q" type="text" name="q" value="{{ q }}" placeholder="和名 / 英名 / 学名 で検索">
+        <input type="submit" value="検索">
+      </div>
+      <p class="note">例：シロイルカ / Beluga / Delphinapterus</p>
+    </form>
+  </section>
+
+  {% if q %}
+    <section class="card">
+      <div class="result-head">
+        <h2 class="h2">検索結果</h2>
+        <div class="result-sub">
+          <span class="mono">「{{ q }}」</span>
+          {% if results %}：{{ results|length }} 件{% else %}：0 件{% endif %}
+        </div>
+      </div>
+
+      {% if results %}
+        <ul class="result-list">
+          {% for sp in results %}
+            <li class="result-item">
+              <div class="result-card">
+                <div class="result-title">
+                  <a href="{{ url_for('species_detail', species_id=sp.id) }}?from=search">{{ sp.jp }}</a>
+                </div>
+                <div class="result-url">/species/{{ sp.id }}</div>
+                <div class="result-meta">
+                  <span class="mono">{{ sp.sci }}</span>
+                  <span class="sep">·</span>
+                  <span>{{ sp.en }}</span>
+                  <span class="sep">·</span>
+                  <span>{{ sp.family }}</span>
+                </div>
+                <div class="result-snippet">
+                  {{ sp.distribution | replace('
+',' ') | truncate(160, True) }}
+                </div>
+              </div>
+            </li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p class="note">該当なし。</p>
+      {% endif %}
+    </section>
+  {% else %}
+    <p class="note">検索語を入力してください。</p>
+  {% endif %}
+{% endblock %}

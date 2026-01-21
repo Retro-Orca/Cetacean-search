@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}お気に入り - 鯨類まとめ{% endblock %}
+{% block content %}
+  <h1 class="h1">お気に入り</h1>
+
+  {% if not logged_in %}
+    <section class="card">
+      <p class="note">お気に入りの表示はログイン後に利用できます。</p>
+      <p><a class="btn" href="{{ url_for('login') }}">ログインへ</a></p>
+    </section>
+  {% else %}
+    <section class="card">
+      <p class="note">登録数：{{ fav_species|length }}</p>
+      {% if fav_species %}
+        <ul class="result-list">
+          {% for sp in fav_species %}
+            <li class="card">
+              <div class="row">
+                <div>
+                  <div class="big"><a href="{{ url_for('species_detail', species_id=sp.id) }}">{{ sp.jp }}</a></div>
+                  <div class="small">{{ sp.en }} / <span class="mono">{{ sp.sci }}</span></div>
+                </div>
+                <div class="right">
+                  <form action="{{ url_for('favorite_remove', species_id=sp.id) }}" method="post">
+                    <button type="submit" class="btn">外す</button>
+                  </form>
+                </div>
+              </div>
+            </li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p class="note">お気に入りはまだありません。</p>
+      {% endif %}
+    </section>
+  {% endif %}
+{% endblock %}

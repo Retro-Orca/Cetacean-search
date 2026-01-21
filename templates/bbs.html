@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}談話室 - 鯨類まとめ{% endblock %}
+{% block content %}
+  <h1 class="h1">談話室</h1>
+
+  <section class="card">
+    <h2 class="h2">投稿</h2>
+
+    {% if logged_in %}
+      <form action="{{ url_for('bbs') }}" method="post" class="bbs-form">
+        <label class="bbs-label" for="bbs-message">メッセージ（120文字まで）</label>
+        <textarea id="bbs-message" name="message" maxlength="120" rows="3" placeholder="例:こんにちは"></textarea>
+        <div class="bbs-form-row">
+          <span id="bbs-counter" class="bbs-counter" aria-live="polite"></span>
+          <input type="submit" value="投稿">
+        </div>
+      </form>
+      <p class="note">※個人情報（電話番号・住所など）の投稿は避けてください。</p>
+    {% else %}
+      <p class="note">投稿するにはログインが必要です。<a href="{{ url_for('login') }}">ログイン</a> / <a href="{{ url_for('register') }}">新規登録</a></p>
+    {% endif %}
+  </section>
+
+  <section class="card">
+    <div class="bbs-head">
+      <h2 class="h2">最新の投稿</h2>
+      <div class="bbs-sub">表示：最新50件</div>
+    </div>
+
+    {% if messages %}
+      <ul class="bbs-list bbs-list-modern">
+        {% for m in messages %}
+          <li class="bbs-item">
+            <div class="bbs-card">
+              <div class="bbs-meta">
+                <span class="mono">{{ m.ts }}</span>
+                <span class="bbs-user">{{ m.user }}</span>
+              </div>
+              <div class="bbs-text">{{ m.text }}</div>
+            </div>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="note">まだ投稿がありません。</p>
+    {% endif %}
+  </section>
+{% endblock %}

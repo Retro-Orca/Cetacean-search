@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}統計 - 鯨類まとめ{% endblock %}
+{% block content %}
+  <h1 class="h1">統計</h1>
+
+  <section class="card">
+    <h2 class="h2">概要</h2>
+    <div class="kv">
+      <div class="item">集計時刻：<span class="mono">{{ now_str }}</span></div>
+      <div class="item">今週の検索総数：<span class="mono">{{ total_searches }}</span></div>
+      <div class="item">談話室の投稿総数：<span class="mono">{{ bbs_total }}</span></div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2 class="h2">今週の検索回数トップ（上位10）</h2>
+    {% if top10 %}
+      <ol class="rank-list">
+        {% for sp in top10 %}
+          <li class="rank-item">
+            <a href="{{ url_for('species_detail', species_id=sp.id) }}">{{ sp.jp }}</a>
+            <span class="badge">{{ sp.count }} 回</span>
+          </li>
+        {% endfor %}
+      </ol>
+
+      {% if chart_available %}
+        <div class="chart-wrap">
+          <img class="chart" src="{{ url_for('stats_search_chart') }}" alt="今週の検索回数トップの棒グラフ">
+          <p class="note">※グラフは matplotlib が利用可能な場合のみ表示されます。</p>
+        </div>
+      {% else %}
+        <p class="note">この環境ではグラフ描画モジュール（matplotlib）が利用できないため、表のみ表示しています。</p>
+      {% endif %}
+
+    {% else %}
+      <p class="note">まだ検索回数データがありません。検索結果から詳細ページに移動するとカウントされます。</p>
+    {% endif %}
+  </section>
+{% endblock %}

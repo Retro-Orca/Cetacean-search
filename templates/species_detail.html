@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block title %}{{ sp.jp }} - 鯨類まとめ{% endblock %}
+{% block content %}
+  <h1 class="h1">{{ sp.jp }}</h1>
+  <p class="small">{{ sp.en }} / <span class="mono">{{ sp.sci }}</span></p>
+
+  <section class="card">
+    <h2 class="h2">基本情報</h2>
+    <div class="kv">
+      {% if sp.family %}<div class="item">分類：{{ sp.family }}</div>{% endif %}
+      {% if sp.length %}<div class="item">体長：{{ sp.length }}</div>{% endif %}
+      {% if sp.weight %}<div class="item">体重：{{ sp.weight }}</div>{% endif %}
+      {% if sp.lifespan %}<div class="item">寿命：{{ sp.lifespan }}</div>{% endif %}
+    </div>
+
+    <div class="row" style="margin-top:10px;">
+      {% if logged_in %}
+        {% if is_fav %}
+          <form action="{{ url_for('favorite_remove', species_id=sp.id) }}" method="post">
+            <button type="submit" class="btn">お気に入りから外す</button>
+          </form>
+        {% else %}
+          <form action="{{ url_for('favorite_add', species_id=sp.id) }}" method="post">
+            <button type="submit" class="btn">お気に入りに追加</button>
+          </form>
+        {% endif %}
+      {% else %}
+        <p class="note">お気に入り登録はログイン後に利用できます。</p>
+      {% endif %}
+    </div>
+  </section>
+
+  {% if sp.distribution %}
+  <section class="card">
+    <h2 class="h2">分布・生息域</h2>
+    <p class="para">{{ sp.distribution }}</p>
+  </section>
+  {% endif %}
+
+  {% if sp.ecology %}
+  <section class="card">
+    <h2 class="h2">生態・特徴</h2>
+    <p class="para">{{ sp.ecology }}</p>
+  </section>
+  {% endif %}
+
+  {% if sp.sources %}
+  <section class="card">
+    <h2 class="h2">参考（一次情報）</h2>
+    <ul class="list">
+      {% for s in sp.sources %}
+        <li><a href="{{ s.url }}" target="_blank" rel="noopener">{{ s.title }}</a></li>
+      {% endfor %}
+    </ul>
+  </section>
+  {% endif %}
+{% endblock %}

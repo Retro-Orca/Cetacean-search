@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}マイページ - 鯨類まとめ{% endblock %}
+{% block content %}
+  <h1>マイページ</h1>
+
+  <section class="card">
+    <h2 class="h2">アカウント</h2>
+    <div class="kv">
+      <div class="item">ユーザー名：<span class="mono">{{ username }}</span></div>
+      {% if created_at %}<div class="item">登録日：<span class="mono">{{ created_at }}</span></div>{% endif %}
+      <div class="item">お気に入り数：<span class="mono">{{ favorites_count_user }}</span></div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2 class="h2">メニュー</h2>
+    <ul class="list">
+      <li><a href="{{ url_for('favorites') }}">お気に入りを見る</a></li>
+      <li><a href="{{ url_for('bbs') }}">談話室を見る</a></li>
+      <li><a href="{{ url_for('logout') }}">ログアウト</a></li>
+    </ul>
+  </section>
+{% endblock %}
